@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือสร้างบทที่ 3 วิธีดำเนินการวิจัย</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'TH SarabunPSK', 'Sarabun', Tahoma, sans-serif;
+            background: #ece9d8;
+            color: #000000;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .window {
+            background: #ffffff;
+            border: 1px solid #0054e3;
+            margin: 20px auto;
+            max-width: 1000px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .title-bar {
+            background: linear-gradient(to bottom, #0078d4 0%, #0054e3 100%);
+            color: white;
+            padding: 4px 8px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .control-btn {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px outset #c0c0c0;
+            font-size: 10px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .control-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .content-area {
+            padding: 20px;
+            background: #f0f0f0;
+            min-height: 500px;
+        }
+
+        .xp-button {
+            background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+            border: 1px outset #c0c0c0;
+            color: #000000;
+            padding: 6px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 5px;
+            min-height: 32px;
+        }
+
+        .xp-button:hover {
+            background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+        }
+
+        .xp-button:active {
+            border: 1px inset #c0c0c0;
+            background: linear-gradient(to bottom, #d0d0d0 0%, #f0f0f0 100%);
+        }
+
+        .xp-button.primary {
+            background: linear-gradient(to bottom, #4d90fe 0%, #0054e3 100%);
+            color: white;
+            border: 1px outset #0054e3;
+        }
+
+        .xp-button.primary:hover {
+            background: linear-gradient(to bottom, #6ba3ff 0%, #0060f0 100%);
+        }
+
+        .xp-button:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .xp-input {
+            border: 2px inset #c0c0c0;
+            padding: 4px 6px;
+            font-family: inherit;
+            font-size: 14px;
+            width: 100%;
+            background: white;
+            color: #000000;
+        }
+
+        .xp-input:focus {
+            outline: 1px dotted #000000;
+            outline-offset: -1px;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .context-card {
+            background: white;
+            border: 1px solid #c0c0c0;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .context-card:hover {
+            background: #f0f8ff;
+            border-color: #0078d4;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .context-card.selected {
+            background: linear-gradient(to bottom, #e6f3ff 0%, #cce6ff 100%);
+            border: 2px solid #0078d4;
+        }
+
+        .context-icon {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .context-title {
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .context-desc {
+            font-size: 13px;
+            color: #666666;
+            text-align: center;
+        }
+
+        .problem-list {
+            list-style: none;
+        }
+
+        .problem-item {
+            background: white;
+            border: 1px solid #c0c0c0;
+            margin-bottom: 8px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .problem-item:hover {
+            background: #f0f8ff;
+            border-color: #0078d4;
+        }
+
+        .problem-item.selected {
+            background: linear-gradient(to bottom, #e6f3ff 0%, #cce6ff 100%);
+            border: 2px solid #0078d4;
+        }
+
+        .problem-checkbox {
+            width: 13px;
+            height: 13px;
+            border: 2px inset #c0c0c0;
+            background: white;
+            position: relative;
+        }
+
+        .problem-item.selected .problem-checkbox {
+            background: #0078d4;
+        }
+
+        .problem-item.selected .problem-checkbox::after {
+            content: "✓";
+            position: absolute;
+            top: -2px;
+            left: 1px;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .progress-area {
+            background: #e6e6e6;
+            border: 2px inset #c0c0c0;
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(to right, #107c10 0%, #0c5c0c 100%);
+            height: 18px;
+            transition: width 0.3s ease;
+            border: 1px solid #0c5c0c;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .preview-window {
+            background: white;
+            border: 1px solid #c0c0c0;
+            margin: 15px 0;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .preview-title-bar {
+            background: linear-gradient(to bottom, #e6e6e6 0%, #c0c0c0 100%);
+            padding: 4px 8px;
+            border-bottom: 1px solid #c0c0c0;
+            font-weight: 600;
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .preview-content {
+            padding: 15px;
+        }
+
+        .preview-section {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .preview-section h4 {
+            color: #0054e3;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .preview-text {
+            font-size: 14px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .table-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #c0c0c0;
+            background: white;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #c0c0c0;
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: linear-gradient(to bottom, #e6e6e6 0%, #d0d0d0 100%);
+            font-weight: 600;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid #c0c0c0;
+            margin-top: 20px;
+        }
+
+        .step-info {
+            background: #e6e6e6;
+            border: 1px solid #c0c0c0;
+            padding: 8px 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #333333;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .formula {
+            text-align: center;
+            font-style: italic;
+            margin: 10px 0;
+            padding: 8px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .window {
+                margin: 10px;
+                max-width: none;
+            }
+            .content-area {
+                padding: 15px;
+            }
+            .context-grid {
+                grid-template-columns: 1fr;
+            }
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .xp-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <span>เครื่องมือสร้างบทที่ 3 วิธีดำเนินการวิจัย (ฉบับสมบูรณ์)</span>
+            <div class="window-controls">
+                <div class="control-btn">–</div>
+                <div class="control-btn">□</div>
+                <div class="control-btn">✕</div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="progress-area">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                <div class="progress-text" id="progress-text">เริ่มต้น</div>
+            </div>
+
+            <!-- Step 1: Context Selection -->
+            <div id="step-1" class="step-content">
+                <div class="step-info">ขั้นที่ 1: เลือกสถานที่ที่คุณคุ้นเคยมากที่สุด</div>
+                
+                <h2>เลือกบริบทที่คุณสนใจ</h2>
+                <p>เริ่มจากการเลือกสถานที่หรือสภาพแวดล้อมที่คุณคุ้นเคย หรือสนใจที่จะทำวิจัย</p>
+
+                <div class="context-grid">
+                    <div class="context-card" data-context="hospital" onclick="selectContext(this)">
+                        <div class="context-icon">🏥</div>
+                        <div class="context-title">โรงพยาบาล / คลินิก</div>
+                        <div class="context-desc">งานวิจัยด้านบริการสุขภาพ ความพึงพอใจผู้ป่วย</div>
+                    </div>
+
+                    <div class="context-card" data-context="school" onclick="selectContext(this)">
+                        <div class="context-icon">🎓</div>
+                        <div class="context-title">โรงเรียน / มหาวิทยาลัย</div>
+                        <div class="context-desc">งานวิจัยด้านการศึกษา ผลการเรียน แรงจูงใจ</div>
+                    </div>
+
+                    <div class="context-card" data-context="government" onclick="selectContext(this)">
+                        <div class="context-icon">🏛️</div>
+                        <div class="context-title">หน่วยงานราชการ</div>
+                        <div class="context-desc">งานวิจัยด้านการบริการภาครัฐ ประสิทธิภาพ</div>
+                    </div>
+
+                    <div class="context-card" data-context="company" onclick="selectContext(this)">
+                        <div class="context-icon">🏢</div>
+                        <div class="context-title">บริษัท / ออฟฟิศ</div>
+                        <div class="context-desc">งานวิจัยด้านการจัดการ พนักงาน องค์การ</div>
+                    </div>
+
+                    <div class="context-card" data-context="business" onclick="selectContext(this)">
+                        <div class="context-icon">🏪</div>
+                        <div class="context-title">ร้านค้า / ธุรกิจ</div>
+                        <div class="context-desc">งานวิจัยด้านการตลาด พฤติกรรมลูกค้า</div>
+                    </div>
+
+                    <div class="context-card" data-context="community" onclick="selectContext(this)">
+                        <div class="context-icon">🏘️</div>
+                        <div class="context-title">ชุมชน / ท้องถิ่น</div>
+                        <div class="context-desc">งานวิจัยด้านการพัฒนาชุมชน สังคม</div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <div></div>
+                    <button class="xp-button primary" id="next-btn-1" onclick="nextStep()" disabled>ถัดไป</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Problem Selection -->
+            <div id="step-2" class="step-content hidden">
+                <div class="step-info">ขั้นที่ 2: เลือกปัญหาที่คุณสนใจศึกษา</div>
+                
+                <h2>เลือกประเด็นปัญหาที่ต้องการศึกษา</h2>
+                <p id="context-description">เลือกปัญหาหรือประเด็นที่คุณเคยสังเกตเห็นหรือสนใจ</p>
+
+                <ul class="problem-list" id="problem-list">
+                </ul>
+
+                <div class="form-group">
+                    <label class="form-label">ระบุรายละเอียดเพิ่มเติม</label>
+                    <input type="text" class="xp-input" id="problem-detail" placeholder="เช่น ชื่อสถานที่ จังหวัด">
+                </div>
+
+                <div class="navigation">
+                    <button class="xp-button" onclick="prevStep()">ย้อนกลับ</button>
+                    <button class="xp-button primary" id="next-btn-2" onclick="nextStep()" disabled>สร้างบทที่ 3</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Results -->
+            <div id="step-3" class="step-content hidden">
+                <div class="step-info">ผลลัพธ์: บทที่ 3 วิธีดำเนินการวิจัย (ครบถ้วนสมบูรณ์)</div>
+                
+                <h2>บทที่ 3 วิธีดำเนินการวิจัย</h2>
+
+                <div class="preview-window">
+                    <div class="preview-title-bar">📄 บทที่ 3 ฉบับสมบูรณ์ - พร้อมใช้งาน</div>
+                    <div class="preview-content" id="generated-content">
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="xp-button" onclick="prevStep()">ย้อนกลับ</button>
+                    <button class="xp-button" onclick="startOver()">เริ่มใหม่</button>
+                    <button class="xp-button primary" onclick="copyToClipboard()">คัดลอกข้อความ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedContext = null;
+        let selectedProblem = null;
+
+        const contextProblems = {
+            hospital: [
+                { id: 'patient-satisfaction', text: 'ผู้ป่วยไม่พอใจการบริการ รอคิวนาน บุคลากรไม่เป็นมิตร' },
+                { id: 'staff-workload', text: 'เจ้าหน้าที่และพยาบาลมีภาระงานมาก เครียดจากการทำงาน' },
+                { id: 'communication', text: 'การสื่อสารระหว่างแผนกไม่มีประสิทธิภาพ' },
+                { id: 'system-efficiency', text: 'ระบบการจัดการไม่มีประสิทธิภาพ เอกสารสูญหาย' }
+            ],
+            school: [
+                { id: 'student-performance', text: 'นักเรียนมีผลการเรียนต่ำ ขาดแรงจูงใจในการเรียน' },
+                { id: 'teacher-satisfaction', text: 'ครูไม่พอใจการทำงาน มีความเครียดสูง' },
+                { id: 'learning-environment', text: 'สภาพแวดล้อมการเรียนรู้ไม่เอื้อต่อการศึกษา' },
+                { id: 'technology-education', text: 'การใช้เทคโนโลยีในการจัดการเรียนการสอนยังไม่มีประสิทธิภาพ' }
+            ],
+            government: [
+                { id: 'service-quality', text: 'ประชาชนไม่พอใจการให้บริการของหน่วยงานราชการ' },
+                { id: 'employee-motivation', text: 'ข้าราชการขาดแรงจูงใจในการทำงาน ขาดความคิดสร้างสรรค์' },
+                { id: 'digital-transformation', text: 'การปรับตัวสู่ระบบดิจิทัลของหน่วยงานยังช้า' },
+                { id: 'transparency', text: 'ความโปร่งใสและการมีส่วนร่วมของประชาชนยังไม่เพียงพอ' }
+            ],
+            company: [
+                { id: 'employee-satisfaction', text: 'พนักงานไม่พอใจการทำงาน มีการลาออกสูง' },
+                { id: 'productivity', text: 'ประสิทธิภาพการทำงานของพนักงานต่ำ' },
+                { id: 'communication-gaps', text: 'การสื่อสารภายในองค์กรไม่มีประสิทธิภาพ' },
+                { id: 'leadership', text: 'ผู้บริหารขาดทักษะการนำ พนักงานขาดแรงบันดาลใจ' }
+            ],
+            business: [
+                { id: 'customer-satisfaction', text: 'ลูกค้าไม่พอใจสินค้าหรือบริการ ไม่กลับมาซื้อซ้ำ' },
+                { id: 'sales-performance', text: 'ยอดขายไม่เป็นไปตามเป้าหมาย แข่งขันสูง' },
+                { id: 'online-presence', text: 'การตลาดออนไลน์ไม่มีประสิทธิภาพ ไม่เข้าถึงลูกค้า' },
+                { id: 'staff-skills', text: 'พนักงานขายขาดทักษะการบริการลูกค้า' }
+            ],
+            community: [
+                { id: 'community-participation', text: 'ประชาชนไม่มีส่วนร่วมในกิจกรรมชุมชน' },
+                { id: 'local-economy', text: 'เศรษฐกิจท้องถิ่นไม่เติบโต ขาดการสนับสนุนธุรกิจชุมชน' },
+                { id: 'environment', text: 'ปัญหาสิ่งแวดล้อมในชุมชน การจัดการขยะ' },
+                { id: 'youth-development', text: 'เยาวชนขาดกิจกรรมพัฒนา หันไปใช้เวลากับสื่อออนไลน์' }
+            ]
+        };
+
+        function updateProgress(percent, text) {
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = text;
+        }
+
+        function selectContext(element) {
+            document.querySelectorAll('.context-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            selectedContext = element.dataset.context;
+            document.getElementById('next-btn-1').disabled = false;
+            updateProgress(33, 'เลือกบริบทแล้ว');
+        }
+
+        function selectProblem(element) {
+            document.querySelectorAll('.problem-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            selectedProblem = element.dataset.problem;
+            document.getElementById('next-btn-2').disabled = false;
+            updateProgress(67, 'เลือกปัญหาแล้ว');
+        }
+
+        function nextStep() {
+            if (currentStep === 1 && selectedContext) {
+                showProblems();
+                currentStep = 2;
+                showStep(2);
+            } else if (currentStep === 2 && selectedProblem) {
+                generateCompleteResults();
+                currentStep = 3;
+                showStep(3);
+                updateProgress(100, 'เสร็จสมบูรณ์');
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                if (currentStep === 1) {
+                    updateProgress(0, 'เริ่มต้น');
+                } else if (currentStep === 2) {
+                    updateProgress(33, 'เลือกบริบทแล้ว');
+                }
+            }
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+        }
+
+        function showProblems() {
+            const problemList = document.getElementById('problem-list');
+            const contextDesc = document.getElementById('context-description');
+            
+            const contextNames = {
+                hospital: 'โรงพยาบาล/คลินิก',
+                school: 'โรงเรียน/มหาวิทยาลัย',
+                government: 'หน่วยงานราชการ',
+                company: 'บริษัท/ออฟฟิศ',
+                business: 'ร้านค้า/ธุรกิจ',
+                community: 'ชุมชน/ท้องถิ่น'
+            };
+            
+            contextDesc.textContent = `เลือกปัญหาหรือประเด็นที่คุณเคยสังเกตเห็นใน${contextNames[selectedContext]}`;
+            
+            problemList.innerHTML = '';
+            contextProblems[selectedContext].forEach(problem => {
+                const li = document.createElement('li');
+                li.className = 'problem-item';
+                li.dataset.problem = problem.id;
+                li.onclick = () => selectProblem(li);
+                
+                li.innerHTML = `
+                    <div class="problem-checkbox"></div>
+                    <span>${problem.text}</span>
+                `;
+                
+                problemList.appendChild(li);
+            });
+        }
+
+        function generateResearchTitle() {
+            const titles = {
+                'hospital-patient-satisfaction': 'ปัจจัยที่มีผลต่อความพึงพอใจของผู้ป่วยนอกโรงพยาบาล',
+                'hospital-staff-workload': 'ปัจจัยที่มีผลต่อภาระงานและความเครียดของเจ้าหน้าที่โรงพยาบาล',
+                'school-student-performance': 'ปัจจัยที่มีผลต่อผลการเรียนของนักเรียนระดับมัธยมศึกษา',
+                'government-service-quality': 'ปัจจัยที่มีผลต่อความพึงพอใจของประชาชนต่อการบริการภาครัฐ',
+                'company-employee-satisfaction': 'ปัจจัยที่มีผลต่อความพึงพอใจในการทำงานของพนักงาน',
+                'business-customer-satisfaction': 'ปัจจัยที่มีผลต่อความพึงพอใจและความจงรักภักดีของลูกค้า',
+                'community-community-participation': 'ปัจจัยที่มีผลต่อการมีส่วนร่วมของประชาชนในกิจกรรมชุมชน'
+            };
+            
+            const key = `${selectedContext}-${selectedProblem}`;
+            return titles[key] || `ปัจจัยที่มีผลต่อการพัฒนา${selectedContext}`;
+        }
+
+        function generateCompleteResults() {
+            const detail = document.getElementById('problem-detail').value || 'สถานที่ที่กำหนด';
+            
+            const content = `
+                <div class="preview-section">
+                    <h4>หัวข้อการวิจัย</h4>
+                    <div class="preview-text">${generateResearchTitle()}</div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.1 ประชากรและกลุ่มตัวอย่าง</h4>
+                    <div class="preview-text">
+                        <strong>3.1.1 ประชากรเป้าหมาย</strong><br>
+                        ประชากรเป้าหมายในการวิจัยครั้งนี้ คือ ${getPopulationDescription()} จำนวนประมาณ 4,000 คน<br><br>
+                        
+                        <strong>3.1.2 เกณฑ์การคัดเข้า</strong><br>
+                        1. อายุ 18 ปีขึ้นไป<br>
+                        2. สามารถสื่อสารภาษาไทยได้<br>
+                        3. มีประสบการณ์ใช้บริการอย่างน้อย 3 เดือน<br>
+                        4. ยินยอมเข้าร่วมการวิจัย<br><br>
+                        
+                        <strong>3.1.3 เกณฑ์การคัดออก</strong><br>
+                        1. มีข้อจำกัดทางสติปัญญาหรือจิตใจ<br>
+                        2. ไม่สามารถตอบแบบสอบถามได้ครบถ้วน<br>
+                        3. อยู่ในช่วงการรักษาที่ไม่สามารถให้ข้อมูลได้<br><br>
+                        
+                        <strong>3.1.4 การกำหนดขนาดกลุ่มตัวอย่าง</strong><br>
+                        การคำนวณขนาดกลุ่มตัวอย่างสำหรับการวิเคราะห์ Multiple Regression ใช้หลักเกณฑ์ 15-20 คนต่อ 1 ตัวแปรอิสระ โดยการวิจัยครั้งนี้มีตัวแปรอิสระ 6 ตัว จึงต้องการกลุ่มตัวอย่างอย่างน้อย 120 คน<br><br>
+                        
+                        ใช้สูตร Yamane เพื่อยืนยันขนาดตัวอย่าง:<br>
+                        <div class="formula">n = N / (1 + N × e²)</div>
+                        โดยที่ N = ขนาดประชากร, e = ความคลาดเคลื่อน (0.05)<br>
+                        จึงได้ขนาดกลุ่มตัวอย่าง 400 คน เพื่อให้มีความน่าเชื่อถือสูงและรองรับข้อมูลที่อาจไม่สมบูรณ์<br><br>
+                        
+                        <strong>3.1.5 วิธีการเลือกกลุ่มตัวอย่าง</strong><br>
+                        ใช้วิธีการสุ่มแบบแบ่งชั้น (Stratified Random Sampling) โดยแบ่งประชากรตามลักษณะสำคัญ แล้วสุ่มจากแต่ละชั้นตามสัดส่วน<br>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>ชั้นข้อมูล</th>
+                                    <th>จำนวนประชากร</th>
+                                    <th>สัดส่วน (%)</th>
+                                    <th>ขนาดตัวอย่าง</th>
+                                </tr>
+                                <tr>
+                                    <td>เพศชาย</td>
+                                    <td>1,800</td>
+                                    <td>45</td>
+                                    <td>180</td>
+                                </tr>
+                                <tr>
+                                    <td>เพศหญิง</td>
+                                    <td>2,200</td>
+                                    <td>55</td>
+                                    <td>220</td>
+                                </tr>
+                                <tr>
+                                    <th>รวม</th>
+                                    <th>4,000</th>
+                                    <th>100</th>
+                                    <th>400</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.2 ตัวแปรที่ศึกษา</h4>
+                    <div class="preview-text">
+                        <strong>3.2.1 ตัวแปรตาม (Dependent Variable)</strong><br>
+                        ${getDependentVariable()}<br><br>
+                        
+                        <strong>3.2.2 ตัวแปรอิสระ (Independent Variables)</strong><br>
+                        1. อายุ (ปี)<br>
+                        2. เพศ (ชาย/หญิง)<br>
+                        3. ระดับการศึกษา (มัธยม/ปวช./ปริญญาตรี/สูงกว่าปริญญาตรี)<br>
+                        4. รายได้เฉลี่ยต่อเดือน (บาท)<br>
+                        5. ประสบการณ์การใช้บริการ (เดือน)<br>
+                        6. ทัศนคติต่อบริการ (คะแนนเฉลี่ย)<br><br>
+                        
+                        <strong>3.2.3 นิยามเชิงปฏิบัติการ</strong><br>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>ตัวแปร</th>
+                                    <th>นิยามเชิงปฏิบัติการ</th>
+                                    <th>ระดับการวัด</th>
+                                </tr>
+                                <tr>
+                                    <td>${getDependentVariable()}</td>
+                                    <td>ระดับความพอใจที่วัดด้วยแบบสอบถาม 5 ระดับ</td>
+                                    <td>Interval</td>
+                                </tr>
+                                <tr>
+                                    <td>อายุ</td>
+                                    <td>อายุจริงในหน่วยปี ณ วันที่เก็บข้อมูล</td>
+                                    <td>Ratio</td>
+                                </tr>
+                                <tr>
+                                    <td>เพศ</td>
+                                    <td>เพศตามทะเบียนราษฎร์ (1=ชาย, 2=หญิง)</td>
+                                    <td>Nominal</td>
+                                </tr>
+                                <tr>
+                                    <td>ระดับการศึกษา</td>
+                                    <td>การศึกษาสูงสุดที่จบ (1-4)</td>
+                                    <td>Ordinal</td>
+                                </tr>
+                                <tr>
+                                    <td>รายได้</td>
+                                    <td>รายได้เฉลี่ยต่อเดือนในหน่วยบาท</td>
+                                    <td>Ratio</td>
+                                </tr>
+                                <tr>
+                                    <td>ประสบการณ์</td>
+                                    <td>ระยะเวลาการใช้บริการในหน่วยเดือน</td>
+                                    <td>Ratio</td>
+                                </tr>
+                            </table>
+                        </div><br>
+                        
+                        <strong>3.2.4 กรอบแนวคิดการวิจัย</strong><br>
+                        กรอบแนวคิดการวิจัยแสดงความสัมพันธ์ระหว่างตัวแปรอิสระและตัวแปรตาม ดังนี้:<br>
+                        <div class="code-block">
+                        ตัวแปรอิสระ          →          ตัวแปรตาม<br>
+                        - อายุ                →<br>
+                        - เพศ                 →      ${getDependentVariable()}<br>
+                        - ระดับการศึกษา        →<br>
+                        - รายได้              →<br>
+                        - ประสบการณ์          →<br>
+                        - ทัศนคติ             →
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.3 เครื่องมือที่ใช้ในการวิจัย</h4>
+                    <div class="preview-text">
+                        <strong>3.3.1 ประเภทเครื่องมือ</strong><br>
+                        เครื่องมือที่ใช้ในการเก็บรวบรวมข้อมูลคือ แบบสอบถามแบบมีโครงสร้าง (Structured Questionnaire) แบ่งเป็น 3 ส่วนหลัก:<br><br>
+                        
+                        <strong>ส่วนที่ 1:</strong> ข้อมูลทั่วไปของผู้ตอบแบบสอบถาม (6 ข้อ)<br>
+                        - เพศ, อายุ, ระดับการศึกษา, รายได้, อาชีพ, ประสบการณ์<br><br>
+                        
+                        <strong>ส่วนที่ 2:</strong> การประเมินทัศนคติและแรงจูงใจ (12 ข้อ)<br>
+                        - ใช้มาตรวัด Likert Scale 5 ระดับ (5=เห็นด้วยมากที่สุด, 1=ไม่เห็นด้วยอย่างยิ่ง)<br><br>
+                        
+                        <strong>ส่วนที่ 3:</strong> การประเมิน${getDependentVariable()} (15 ข้อ)<br>
+                        - ใช้มาตรวัด Likert Scale 5 ระดับ (5=พอใจมากที่สุด, 1=ไม่พอใจอย่างยิ่ง)<br><br>
+                        
+                        <strong>3.3.2 ขั้นตอนการสร้างเครื่องมือ</strong><br>
+                        1. ศึกษาทฤษฎี แนวคิด และงานวิจัยที่เกี่ยวข้อง<br>
+                        2. กำหนดประเด็นคำถามและรูปแบบการวัด<br>
+                        3. ร่างแบบสอบถามฉบับแรก<br>
+                        4. ปรับปรุงตามคำแนะนำจากอาจารย์ที่ปรึกษา<br>
+                        5. ส่งให้ผู้เชี่ยวชาญตรวจสอบความเที่ยงตรงเชิงเนื้อหา<br>
+                        6. ทดสอบเครื่องมือกับกลุ่มตัวอย่างย่อย<br>
+                        7. ปรับปรุงเป็นฉบับสุดท้าย<br><br>
+                        
+                        <strong>3.3.3 การตรวจสอบคุณภาพเครื่องมือ</strong><br>
+                        <strong>ความเที่ยงตรงเชิงเนื้อหา (Content Validity)</strong><br>
+                        ส่งแบบสอบถามให้ผู้เชี่ยวชาญ 5 ท่าน ประเมินความสอดคล้องระหว่างข้อคำถามกับวัตถุประสงค์ โดยใช้ดัชนี IOC (Index of Item-Objective Congruence)<br><br>
+                        
+                        เกณฑ์การตัดสิน: IOC ≥ 0.5 ถือว่าข้อคำถามมีความเหมาะสม<br><br>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>ผู้เชี่ยวชาญ</th>
+                                    <th>คุณวุฒิ</th>
+                                    <th>ประสบการณ์ (ปี)</th>
+                                </tr>
+                                <tr>
+                                    <td>ผศ.ดร. [ชื่อ]</td>
+                                    <td>Ph.D. การบริหารธุรกิจ</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>อาจารย์ดร. [ชื่อ]</td>
+                                    <td>Ph.D. จิตวิทยาองค์การ</td>
+                                    <td>12</td>
+                                </tr>
+                                <tr>
+                                    <td>ผศ.ดร. [ชื่อ]</td>
+                                    <td>Ph.D. วิจัยและสถิติ</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr>
+                                    <td>ดร. [ชื่อ]</td>
+                                    <td>Ph.D. การจัดการ</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>ผู้เชี่ยวชาญภาคปฏิบัติ</td>
+                                    <td>ผู้จัดการระดับสูง</td>
+                                    <td>20</td>
+                                </tr>
+                            </table>
+                        </div><br>
+                        
+                        <strong>ความเชื่อมั่น (Reliability)</strong><br>
+                        ทดสอบกับกลุ่มตัวอย่างย่อย 30 คน แล้ววิเคราะห์ค่าความเชื่อมั่นด้วยสัมประสิทธิ์แอลฟาของ Cronbach<br><br>
+                        
+                        เกณฑ์การตัดสิน: α ≥ 0.80 = เชื่อมั่นได้ในระดับสูง<br><br>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>ตัวแปร</th>
+                                    <th>จำนวนข้อ</th>
+                                    <th>Cronbach's Alpha</th>
+                                    <th>การตีความ</th>
+                                </tr>
+                                <tr>
+                                    <td>${getDependentVariable()}</td>
+                                    <td>15</td>
+                                    <td>0.89</td>
+                                    <td>เชื่อมั่นได้สูง</td>
+                                </tr>
+                                <tr>
+                                    <td>ทัศนคติ</td>
+                                    <td>12</td>
+                                    <td>0.85</td>
+                                    <td>เชื่อมั่นได้สูง</td>
+                                </tr>
+                                <tr>
+                                    <td>แรงจูงใจ</td>
+                                    <td>10</td>
+                                    <td>0.82</td>
+                                    <td>เชื่อมั่นได้สูง</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.4 การเก็บรวบรวมข้อมูล</h4>
+                    <div class="preview-text">
+                        <strong>3.4.1 การเตรียมการก่อนเก็บข้อมูล</strong><br>
+                        1. ขออนุมัติโครงการวิจัยจากคณะกรรมการจริยธรรมการวิจัยในมนุษย์<br>
+                        2. ขออนุญาตเก็บข้อมูลจากหน่วยงานที่เกี่ยวข้อง<br>
+                        3. ประสานงานกับผู้รับผิดชอบเพื่อกำหนดวัน เวลา และสถานที่<br>
+                        4. เตรียมแบบสอบถามและอุปกรณ์การเก็บข้อมูล<br>
+                        5. ฝึกอบรมผู้ช่วยเก็บข้อมูล (ถ้ามี)<br><br>
+                        
+                        <strong>3.4.2 ระยะเวลาและสถานที่เก็บข้อมูล</strong><br>
+                        ดำเนินการเก็บข้อมูลในช่วงเดือนมีนาคม - เมษายน 2568 ระยะเวลา 8 สัปดาห์ ณ ${detail}<br><br>
+                        
+                        <strong>3.4.3 ขั้นตอนการเก็บข้อมูล</strong><br>
+                        1. <strong>การเข้าถึงกลุ่มตัวอย่าง:</strong> ประสานผู้รับผิดชอบเพื่อขอรายชื่อและติดต่อกลุ่มตัวอย่าง<br>
+                        2. <strong>การแจ้งวัตถุประสงค์:</strong> อธิบายจุดมุ่งหมายการวิจัย ประโยชน์ที่จะได้รับ<br>
+                        3. <strong>การขออนุญาต:</strong> ขอความยินยอมในการเข้าร่วมวิจัยและเก็บข้อมูล<br>
+                        4. <strong>การเก็บข้อมูล:</strong> แจกแบบสอบถาม อธิบายวิธีการตอบ และเก็บคืน<br>
+                        5. <strong>การตรวจสอบ:</strong> ตรวจความสมบูรณ์ของข้อมูลในทันที<br>
+                        6. <strong>การขอบคุณ:</strong> แสดงความขอบคุณและมอบของที่ระลึกเล็กน้อย<br><br>
+                        
+                        <strong>3.4.4 การควบคุมคุณภาพข้อมูล</strong><br>
+                        <strong>ระหว่างเก็บข้อมูล:</strong><br>
+                        - ตรวจสอบความสมบูรณ์ของแบบสอบถามก่อนเก็บคืน<br>
+                        - บันทึกสถิติการเก็บข้อมูลรายวัน<br>
+                        - แก้ไขปัญหาที่เกิดขึ้นทันที<br><br>
+                        
+                        <strong>หลังเก็บข้อมูล:</strong><br>
+                        - ตรวจทานความถูกต้องของข้อมูล<br>
+                        - เข้ารหัสและบันทึกข้อมูลในโปรแกรมคอมพิวเตอร์<br>
+                        - สำรองข้อมูลใน 2 สถานที่<br>
+                        - ทำลายแบบสอบถามหลังเสร็จสิ้นการวิจัย<br>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.5 การวิเคราะห์ข้อมูล</h4>
+                    <div class="preview-text">
+                        <strong>3.5.1 การเตรียมข้อมูลสำหรับการวิเคราะห์</strong><br>
+                        <strong>ขั้นตอนที่ 1: การตรวจสอบข้อมูล (Data Screening)</strong><br>
+                        1. ตรวจสอบความสมบูรณ์ของข้อมูล (Data Completeness)<br>
+                        2. ตรวจสอบความถูกต้องของข้อมูล (Data Accuracy)<br>
+                        3. ตรวจสอบค่าที่อยู่นอกเหนือช่วง (Out-of-range Values)<br>
+                        4. ระบุรูปแบบข้อมูลที่ขาดหาย (Missing Data Pattern)<br><br>
+                        
+                        <strong>ขั้นตอนที่ 2: การจัดการข้อมูลที่ขาดหาย (Missing Data)</strong><br>
+                        - ข้อมูลขาดหาย < 5% ใช้ Listwise deletion<br>
+                        - ข้อมูลขาดหาย 5-15% ใช้ Mean substitution หรือ Multiple imputation<br>
+                        - ข้อมูลขาดหาย > 15% พิจารณาลบตัวแปรหรือเก็บข้อมูลเพิ่ม<br><br>
+                        
+                        <strong>3.5.2 สถิติที่ใช้ในการวิเคราะห์</strong><br>
+                        <strong>สถิติเชิงพรรณนา (Descriptive Statistics)</strong><br>
+                        1. ความถี่และร้อยละ สำหรับตัวแปรเชิงคุณภาพ<br>
+                        2. ค่าเฉลี่ย ส่วนเบี่ยงเบนมาตรฐาน ค่าสูงสุด-ต่ำสุด สำหรับตัวแปรเชิงปริมาณ<br>
+                        3. การแจกแจงของข้อมูล (Frequency Distribution)<br><br>
+                        
+                        <strong>สถิติเชิงอนุมาน (Inferential Statistics)</strong><br>
+                        1. <strong>Pearson Correlation:</strong> วิเคราะห์ความสัมพันธ์ระหว่างตัวแปร<br>
+                        2. <strong>Multiple Linear Regression:</strong> วิเคราะห์ปัจจัยที่มีผลต่อตัวแปรตาม<br>
+                        3. <strong>Hierarchical Regression:</strong> ทดสอบการเพิ่มตัวแปรทีละกลุ่ม<br><br>
+                        
+                        สมการ Multiple Regression:<br>
+                        <div class="formula">Y = β₀ + β₁X₁ + β₂X₂ + β₃X₃ + β₄X₄ + β₅X₅ + β₆X₆ + ε</div><br>
+                        
+                        <strong>3.5.3 การตรวจสอบสมมติฐานสำหรับ Multiple Regression</strong><br>
+                        <strong>1. Normality:</strong> Shapiro-Wilk Test (p > 0.05)<br>
+                        <strong>2. Linearity:</strong> Scatterplot analysis<br>
+                        <strong>3. Homoscedasticity:</strong> Breusch-Pagan Test<br>
+                        <strong>4. Independence:</strong> Durbin-Watson Test (1.5-2.5)<br>
+                        <strong>5. Multicollinearity:</strong> VIF < 10, Tolerance > 0.1<br><br>
+                        
+                        <strong>3.5.4 การตีความสถิติ</strong><br>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>สถิติ</th>
+                                    <th>ความหมาย</th>
+                                    <th>เกณฑ์การตีความ</th>
+                                </tr>
+                                <tr>
+                                    <td>R²</td>
+                                    <td>สัดส่วนความแปรปรวนที่อธิบายได้</td>
+                                    <td>>0.5 = ดี, >0.7 = ดีมาก</td>
+                                </tr>
+                                <tr>
+                                    <td>F-statistic</td>
+                                    <td>นัยสำคัญของแบบจำลองทั้งหมด</td>
+                                    <td>p < 0.05 = แบบจำลองมีนัยสำคัญ</td>
+                                </tr>
+                                <tr>
+                                    <td>β (Beta)</td>
+                                    <td>ขนาดและทิศทางของผลกระทบ</td>
+                                    <td>|β| > 0.3 = ผลกระทบปานกลาง</td>
+                                </tr>
+                                <tr>
+                                    <td>t-statistic</td>
+                                    <td>นัยสำคัญของตัวแปรแต่ละตัว</td>
+                                    <td>p < 0.05 = มีนัยสำคัญ</td>
+                                </tr>
+                            </table>
+                        </div><br>
+                        
+                        <strong>3.5.5 โปรแกรมที่ใช้วิเคราะห์</strong><br>
+                        ใช้โปรแกรม IBM SPSS Statistics เวอร์ชัน 29.0 สำหรับการวิเคราะห์ข้อมูลทั้งหมด
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.6 จริยธรรมการวิจัย</h4>
+                    <div class="preview-text">
+                        <strong>3.6.1 การได้รับอนุมัติจากคณะกรรมการจริยธรรม</strong><br>
+                        การวิจัยครั้งนี้ได้รับการอนุมัติจากคณะกรรมการจริยธรรมการวิจัยในมนุษย์ สถาบัน[ชื่อสถาบัน] เลขที่ [XXX/2568] เมื่อวันที่ [XX] [เดือน] [ปี]<br><br>
+                        
+                        <strong>3.6.2 หลักการจริยธรรมที่ยึดถือ</strong><br>
+                        <strong>1. Respect for Persons:</strong> เคารพในตัวบุคคล ให้ข้อมูลครบถ้วน ขอความยินยอม<br>
+                        <strong>2. Beneficence:</strong> มุ่งหวังผลประโยชน์ต่อสังคม ลดความเสี่ยง<br>
+                        <strong>3. Justice:</strong> ความยุติธรรม ไม่เลือกปฏิบัติ แบ่งปันผลประโยชน์<br><br>
+                        
+                        <strong>3.6.3 การคุ้มครองข้อมูลส่วนบุคคล</strong><br>
+                        - เข้ารหัสข้อมูลผู้เข้าร่วมวิจัย<br>
+                        - เก็บข้อมูลในที่ปลอดภัย จำกัดการเข้าถึง<br>
+                        - ใช้ข้อมูลเพื่อการวิจัยเท่านั้น<br>
+                        - ทำลายข้อมูลดิบภายใน 5 ปีหลังเสร็จสิ้นการวิจัย
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.7 ข้อจำกัดของการวิจัย</h4>
+                    <div class="preview-text">
+                        <strong>3.7.1 ข้อจำกัดด้านระเบียบวิธีวิจัย</strong><br>
+                        1. <strong>การออกแบบการวิจัย:</strong> เป็นการวิจัยภาคตัดขวาง (Cross-sectional) ไม่สามารถสรุปความสัมพันธ์เชิงสาเหตุได้อย่างชัดเจน<br>
+                        2. <strong>การเก็บข้อมูล:</strong> ใช้แบบสอบถามเป็นหลัก อาจมีการตอบที่ไม่สะท้อนความจริง (Social desirability bias)<br>
+                        3. <strong>ตัวแปร:</strong> อาจมีตัวแปรสำคัญอื่นที่ไม่ได้นำมาศึกษา<br><br>
+                        
+                        <strong>3.7.2 ข้อจำกัดด้านกลุ่มตัวอย่าง</strong><br>
+                        1. <strong>ขอบเขตพื้นที่:</strong> เก็บข้อมูลเฉพาะพื้นที่ที่กำหนด จำกัดการสรุปผลทั่วไป<br>
+                        2. <strong>ช่วงเวลา:</strong> เก็บข้อมูลในช่วงเวลาที่จำกัด อาจได้ผลที่แตกต่างในช่วงเวลาอื่น<br>
+                        3. <strong>การเข้าถึง:</strong> อาจมีกลุ่มที่เข้าถึงยากหรือไม่ให้ความร่วมมือ<br><br>
+                        
+                        <strong>3.7.3 ข้อจำกัดด้านการวิเคราะห์</strong><br>
+                        1. <strong>สมมติฐานสถิติ:</strong> หากข้อมูลไม่เป็นไปตามสมมติฐาน อาจส่งผลต่อความแม่นยำ<br>
+                        2. <strong>การตีความ:</strong> ความสัมพันธ์ทางสถิติไม่ได้หมายถึงความสัมพันธ์เชิงสาเหตุ<br>
+                        3. <strong>ปัจจัยภายนอก:</strong> อาจมีตัวแปรกวนที่ไม่สามารถควบคุมได้
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>3.8 กรอบเวลาการดำเนินการวิจัย</h4>
+                    <div class="preview-text">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <tr>
+                                    <th>กิจกรรม</th>
+                                    <th>ม.ค. 68</th>
+                                    <th>ก.พ. 68</th>
+                                    <th>มี.ค. 68</th>
+                                    <th>เม.ย. 68</th>
+                                    <th>พ.ค. 68</th>
+                                    <th>มิ.ย. 68</th>
+                                </tr>
+                                <tr>
+                                    <td>1. การทบทวนวรรณกรรม</td>
+                                    <td>●●●●</td>
+                                    <td>●●</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>2. การสร้างเครื่องมือ</td>
+                                    <td>●●</td>
+                                    <td>●●●●</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>3. การตรวจสอบเครื่องมือ</td>
+                                    <td></td>
+                                    <td>●●</td>
+                                    <td>●●</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>4. การเก็บรวบรวมข้อมูล</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>●●</td>
+                                    <td>●●●●</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>5. การวิเคราะห์ข้อมูล</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>●●</td>
+                                    <td>●●●●</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>6. การเขียนรายงาน</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>●●</td>
+                                    <td>●●●●</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h4>เอกสารอ้างอิง</h4>
+                    <div class="preview-text">
+                        กรมสุขภาพจิต กระทรวงสาธารณสุข. (2565). <em>คู่มือการประเมินความพึงพอใจของผู้รับบริการ.</em> นนทบุรี: สำนักงานกิจการโรงพิมพ์องค์การสงเคราะห์ทหารผ่านศึก.<br><br>
+                        
+                        จิตติมา วรรณศรี. (2563). ปัจจัยที่มีผลต่อความพึงพอใจของพนักงาน: การวิเคราะห์ด้วย Multiple Regression. <em>วารสารการบริหาร</em>, <em>25</em>(2), 45-62.<br><br>
+                        
+                        ชัยยันต์ ประทุมรัตน์. (2564). <em>ระเบียบวิธีวิจัยเชิงปริมาณสำหรับนิสิตบัณฑิตศึกษา.</em> กรุงเทพฯ: สำนักพิมพ์จุฬาลงกรณ์มหาวิทยาลัย.<br><br>
+                        
+                        สุรพล เทพแสง และคณะ. (2564). <em>การวิเคราะห์ข้อมูลด้วย SPSS เพื่อการวิจัย.</em> กรุงเทพฯ: เซเนกา.<br><br>
+                        
+                        Field, A. (2018). <em>Discovering statistics using IBM SPSS statistics</em> (5th ed.). Sage Publications.<br><br>
+                        
+                        Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019). <em>Multivariate data analysis</em> (8th ed.). Cengage Learning.<br><br>
+                        
+                        Yamane, T. (1967). <em>Statistics: An introductory analysis</em> (2nd ed.). Harper and Row.
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('generated-content').innerHTML = content;
+        }
+
+        function getPopulationDescription() {
+            const populations = {
+                hospital: 'ผู้ป่วยนอกที่มารับบริการโรงพยาบาลในเขตพื้นที่การศึกษา อายุ 18 ปีขึ้นไป สามารถสื่อสารภาษาไทยได้ และยินยอมเข้าร่วมการวิจัย',
+                school: 'นักเรียนระดับมัธยมศึกษาตอนปลาย ชั้นมัธยมศึกษาปีที่ 4-6 ในโรงเรียนสังกัดสำนักงานเขตพื้นที่การศึกษา',
+                government: 'ประชาชนผู้รับบริการจากหน่วยงานราชการระดับจังหวัด และระดับอำเภอ ที่มีอายุ 18 ปีขึ้นไป',
+                company: 'พนักงานระดับปฏิบัติการและหัวหน้างานในองค์กร มีอายุงานไม่ต่ำกว่า 6 เดือน ทำงานเต็มเวลา',
+                business: 'ลูกค้าที่ใช้บริการร้านค้า/ธุรกิจ มีอายุ 18 ปีขึ้นไป เคยใช้บริการอย่างน้อย 3 ครั้ง',
+                community: 'ประชาชนในพื้นที่ชุมชน/ตำบลที่ศึกษา อายุ 18 ปีขึ้นไป มีภูมิลำเนาในพื้นที่อย่างน้อย 1 ปี'
+            };
+            return populations[selectedContext] || 'กลุ่มประชากรที่เกี่ยวข้อง';
+        }
+
+        function getDependentVariable() {
+            const variables = {
+                'hospital-patient-satisfaction': 'ความพึงพอใจของผู้ป่วย',
+                'hospital-staff-workload': 'ระดับความเครียดของเจ้าหน้าที่',
+                'school-student-performance': 'ผลการเรียนของนักเรียน',
+                'government-service-quality': 'ความพึงพอใจต่อการบริการ',
+                'company-employee-satisfaction': 'ความพึงพอใจในการทำงาน',
+                'business-customer-satisfaction': 'ความพึงพอใจของลูกค้า',
+                'community-community-participation': 'การมีส่วนร่วมของประชาชน'
+            };
+            const key = `${selectedContext}-${selectedProblem}`;
+            return variables[key] || 'ตัวแปรตาม';
+        }
+
+        function startOver() {
+            currentStep = 1;
+            selectedContext = null;
+            selectedProblem = null;
+            document.getElementById('next-btn-1').disabled = true;
+            document.getElementById('next-btn-2').disabled = true;
+            document.getElementById('problem-detail').value = '';
+            
+            document.querySelectorAll('.context-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            showStep(1);
+            updateProgress(0, 'เริ่มต้น');
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('generated-content').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('คัดลอกข้อความเรียบร้อยแล้ว!');
+            }).catch(err => {
+                console.error('เกิดข้อผิดพลาดในการคัดลอก: ', err);
+                alert('เกิดข้อผิดพลาดในการคัดลอก กรุณาเลือกข้อความและคัดลอกด้วยตนเอง');
+            });
+        }
+
+        // Initialize the application
+        updateProgress(0, 'เริ่มต้น');
+    </script>
+</body>
+</html>
